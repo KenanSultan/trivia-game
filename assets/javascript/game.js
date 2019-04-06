@@ -1,4 +1,4 @@
-function startGame() {
+function initGame() {
     allAnswers = []
     randomNums = []
     correct = 0
@@ -7,13 +7,13 @@ function startGame() {
     total = 0
 }
 
-startGame()
+initGame()
 
 function gameResults() {
     $(".answers-div").empty()
-    $(".gif-div").empty()
+    $(".gif-div").removeClass("d-inline-block").addClass("d-none")
     $(".correct-div").removeClass("d-inline-block").addClass("d-none")
-    $(".question-div").html("<h4> All done, heres how you did! </h4>")
+    $(".question-div").html("<h4 class='font-weight-bold'> All done, heres how you did! </h4>")
     $(".again-btn").removeClass("d-none").addClass("d-inline-block")
 
     $("#corrects").text(correct)
@@ -27,7 +27,6 @@ function nextQuestion() {
         allAnswers = []
         randomNums = []
         $("#second").text("30")
-        $(".correct-div").removeClass("d-inline-block").addClass("d-none")
         connectAjax()
         second = 30
         startTimer()
@@ -40,8 +39,9 @@ function timeOut() {
     unanswered++
     clearInterval(timerVar)
     $(".answers-div").empty()
-    $(".question-div").html("<h4> Out Of Time! </h4>")
+    $(".question-div").html("<h4 class='font-weight-bold'> Out Of Time! </h4>")
     $(".correct-div").removeClass("d-none").addClass("d-inline-block")
+    $(".gif-div").removeClass("d-none").addClass("d-inline-block")
 
     setTimeout(nextQuestion, 3000)
 }
@@ -57,16 +57,30 @@ function startTimer() {
     }
 }
 
+function connectGiphy(query) {
+    $.ajax({
+        url: "https://api.giphy.com/v1/gifs/search",
+        data: {
+            api_key: 'dc6zaTOxFJmzC',
+            q: query,
+            limit: 1
+        },
+        method: "GET"
+    }).done(function(gifResp) {
+        $(".gif-img").attr("src",gifResp.data[0].images.fixed_height.url)
+    })
+}
+
 function connectAjax() {
     $.ajax({
         url: "https://opentdb.com/api.php?amount=1&difficulty=easy&type=multiple"
-    }).done(function (resp) {
+    }).done(function(resp) {
         total++
 
         function winFunc() {
             correct++
             clearInterval(timerVar)
-            $(".question-div").html("<h4> Correct! </h4>")
+            $(".question-div").html("<h4 class='font-weight-bold'> Correct! </h4>")
             $(".answers-div").empty()
             setTimeout(nextQuestion, 3000)
         }
@@ -74,15 +88,17 @@ function connectAjax() {
         function loseFunc() {
             incorrect++
             clearInterval(timerVar)
-            $(".question-div").html("<h4> Nope! </h4>")
+            $(".question-div").html("<h4 class='font-weight-bold'> Nope! </h4>")
             $(".answers-div").empty()
             $(".correct-div").removeClass("d-none").addClass("d-inline-block")
             setTimeout(nextQuestion, 3000)
         }
+        
+        $(".correct-div").removeClass("d-inline-block").addClass("d-none")
+        $(".question-div").html("<h4 class='info m-2 font-weight-bold'>" + resp.results[0].question + "</h4>")
+        $("#correct").html(resp.results[0].correct_answer)
+        $(".gif-div").removeClass("d-inline-block").addClass("d-none")
 
-        console.log(resp)
-        $(".question-div").html("<h4 class='info m-2'>" + resp.results[0].question + "</h4>")
-        $("#correct").text(resp.results[0].correct_answer)
 
         allAnswers.push(resp.results[0].correct_answer)
         for (let j = 0; j < 3; j++) {
@@ -97,11 +113,14 @@ function connectAjax() {
         }
 
         for (i in randomNums) {
-            var buton = $("<button>").addClass("btn btn-warning m-2 choises").text(allAnswers[randomNums[i]])
+            var buton = $("<button>").addClass("btn btn-warning m-2 choises").html(allAnswers[randomNums[i]])
             $(".answers-div").append(buton)
         }
 
+        connectGiphy(resp.results[0].correct_answer)
+
         $(".choises").on("click", function () {
+            $(".gif-div").removeClass("d-none").addClass("d-inline-block")
             if ($(this).text() == resp.results[0].correct_answer) {
                 winFunc()
             } else {
@@ -124,7 +143,7 @@ $(".again-btn").on("click", function () {
     $("#second").text("30")
     $(".results-div").removeClass("d-inline-block").addClass("d-none")
     $(".question-div").html("")
-    startGame()
+    initGame()
     startTimer()
     connectAjax()
 })
