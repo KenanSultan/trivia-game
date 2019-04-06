@@ -1,0 +1,12 @@
+body {
+    background: url("../images/back.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.back {
+    background-color: rgba(250, 235, 215, 0.8);
+    margin: 30px auto;
+    border-radius: 10%;
+    min-height: 500px;
+}

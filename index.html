@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <div class="container back">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="font-weight-bold mt-5 mb-5">TRIVIA GAME</h1>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12">
+                <button class="btn btn-info font-weight-bold w-25 mt-5 start-btn">Start</button>
+            </div>
+            <div class="col-12 timer-div d-none"><h4 class="font-weight-bold">Time Remaining: <span id="second"> 30 </span> Seconds</h4></div>
+            <hr>
+            <div class="col-12 question-div text-success m-2"></div>
+            <hr>
+            <div class="col-12 answers-div"></div>
+            <div class="col-12 correct-div d-none"><h4>The Correct Answer Was: <span id="correct"></span></h4></div>
+            <div class="col-12 results-div d-none">
+                <p>Correct Answers: <span id="corrects"></span></p>
+                <p>Incorrect Answers: <span id="incorrects"></span></p>
+                <p>Unanswered: <span id="unanswereds"></span></p>
+            </div>
+            <div class="col-12 gif-div"></div>
+            <div class="col-12"><button class="btn btn-info font-weight-bold w-25 mt-5 again-btn d-none">Play again</button></div>
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="./assets/javascript/game.js"></script>
+</body>
+</html>
